@@ -64,7 +64,7 @@ static void UartCounterTask(void)
         if ((now - lastPrint) >= 300U)
         {
             count++;
-            PRINTF("[UART-Counter] tick=%lu count=%lu\r\n", now, count);
+            PRINTF("[UART-Counter] tick=%u count=%u\r\n", now, count);
             lastPrint = now;
         }
     }
@@ -99,7 +99,7 @@ static void TouchSliderTask(void)
             TSI_ClearStatusFlags(TSI0, kTSI_EndOfScanFlag);
 
             delta = (int32_t)counter - (int32_t)baseline.calibratedData[BOARD_TSI_ELECTRODE_1];
-            PRINTF("[TouchSlider] tick=%lu electrode1_delta=%ld\r\n", now, delta);
+            PRINTF("[TouchSlider] tick=%u electrode1_delta=%d\r\n", now, delta);
             lastSample = now;
         }
     }
