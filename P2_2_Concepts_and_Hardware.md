@@ -8,17 +8,43 @@
 
 This assumes P0 and P1's vocabulary (microcontroller, GPIO, UART, interrupts, the NVIC, the superloop-plus-flag pattern). Everything below is new to P2.
 
-**What actually happens during an exception, at the hardware level.** P1 told you that an interrupt "pauses whatever the CPU is doing and jumps to a handler." Here is the mechanism. When any exception fires (an interrupt, or a software-triggered one like PendSV), the Cortex-M0+ hardware automatically does two things before your handler code runs a single instruction: it pushes 8 specific registers onto the currently active stack (this is called "stacking"), and it loads a special value into the link register (LR) called `EXC_RETURN` that records how to return from this exception later. Both of these happen in hardware, automatically, with no code of yours involved. Section 5 covers exactly what gets stacked and in what order.
+#### What actually happens during an exception, at the hardware level
 
-**MSP and PSP: two stack pointers, not one.** Every Cortex-M processor actually has two separate stack pointer registers, though only one is active at a time. The Main Stack Pointer (MSP) is what's active from reset and is what all your code has been using through P0 and P1 without you needing to know it existed. The Process Stack Pointer (PSP) is a second, independent stack that software can switch to. P2's entire design rests on this: each task gets its own private stack, and PSP is what gets pointed at whichever task is currently running, while MSP stays reserved for exception handling itself. This is exactly how FreeRTOS and every other Cortex-M RTOS separates "the OS's own stack" from "each task's stack."
+P1 told you that an interrupt "pauses whatever the CPU is doing and jumps to a handler." Here is the mechanism.
 
-**The CONTROL register.** This is what decides whether the processor is currently using MSP or PSP in Thread mode (ordinary, non-exception code). Bit 1 of CONTROL (called SPSEL) is 0 for MSP, 1 for PSP. Section 11 has you write `movs r0, #2` then `msr control, r0` exactly once, to make this switch permanently for the rest of the program's life.
+When any exception fires (an interrupt, or a software-triggered one like PendSV), the Cortex-M0+ hardware automatically does two things before your handler code runs a single instruction: it pushes 8 specific registers onto the currently active stack (this is called "stacking"), and it loads a special value into the link register (LR) called `EXC_RETURN` that records how to return from this exception later.
 
-**EXC_RETURN.** When an exception fires, the hardware doesn't just jump to your handler; it loads LR with a special sentinel value (on this chip, one of a small handful of values, all starting with `0xFFFFFFF...`) that isn't a real code address at all. It's a signal: when your handler eventually does `bx lr` (or, as in this project, `bx r3` after moving that value into r3), the processor recognizes the sentinel pattern and knows this is a request to return from an exception, not a normal function return, and it automatically unstacks the same 8 registers it stacked on entry. The specific bit pattern also tells the processor which stack (MSP or PSP) to unstack from and return to. This project relies on this mechanism directly, not through a library function; Section 9 shows exactly where.
+Both of these happen in hardware, automatically, with no code of yours involved. Section 5 covers exactly what gets stacked and in what order.
 
-**Task Control Block (TCB).** A small struct, one per task, that holds everything the scheduler needs to know about a task it isn't currently running: at minimum, where that task's stack pointer was left off. Section 7 covers this project's TCB and one non-negotiable rule about its layout.
+#### MSP and PSP: two stack pointers, not one
 
-**Context switch.** The act of saving the currently running task's CPU state (all its registers) somewhere safe, then loading a different task's previously saved state back into the CPU, so execution resumes exactly where that other task left off, with no way for either task to tell it ever stopped running. This is the single mechanism this entire project builds.
+Every Cortex-M processor actually has two separate stack pointer registers, though only one is active at a time. The Main Stack Pointer (MSP) is what's active from reset and is what all your code has been using through P0 and P1 without you needing to know it existed. The Process Stack Pointer (PSP) is a second, independent stack that software can switch to.
+
+P2's entire design rests on this: each task gets its own private stack, and PSP is what gets pointed at whichever task is currently running, while MSP stays reserved for exception handling itself. This is exactly how FreeRTOS and every other Cortex-M RTOS separates "the OS's own stack" from "each task's stack."
+
+#### The CONTROL register
+
+This is what decides whether the processor is currently using MSP or PSP in Thread mode (ordinary, non-exception code). Bit 1 of CONTROL (called SPSEL) is 0 for MSP, 1 for PSP.
+
+Section 11 has you write `movs r0, #2` then `msr control, r0` exactly once, to make this switch permanently for the rest of the program's life.
+
+#### EXC_RETURN
+
+When an exception fires, the hardware doesn't just jump to your handler; it loads LR with a special sentinel value (on this chip, one of a small handful of values, all starting with `0xFFFFFFF...`) that isn't a real code address at all.
+
+It's a signal: when your handler eventually does `bx lr` (or, as in this project, `bx r3` after moving that value into r3), the processor recognizes the sentinel pattern and knows this is a request to return from an exception, not a normal function return, and it automatically unstacks the same 8 registers it stacked on entry. The specific bit pattern also tells the processor which stack (MSP or PSP) to unstack from and return to.
+
+This project relies on this mechanism directly, not through a library function; Section 9 shows exactly where.
+
+#### Task Control Block (TCB)
+
+A small struct, one per task, that holds everything the scheduler needs to know about a task it isn't currently running: at minimum, where that task's stack pointer was left off. Section 7 covers this project's TCB and one non-negotiable rule about its layout.
+
+#### Context switch
+
+The act of saving the currently running task's CPU state (all its registers) somewhere safe, then loading a different task's previously saved state back into the CPU, so execution resumes exactly where that other task left off, with no way for either task to tell it ever stopped running.
+
+This is the single mechanism this entire project builds.
 
 ## 4. Register and Priority Reference
 
