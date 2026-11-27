@@ -1,0 +1,13 @@
+0:00 Under the hood
+0:10 The promises, scheduler.h
+0:39 The planner's storage
+0:59 A safety net
+1:06 Forging a bookmark
+1:35 Adding a task
+1:44 Choosing who is next
+2:05 The heartbeat and the start
+2:26 Saving the old task
+2:49 Switching
+3:00 Restoring the new task
+3:20 The very first launch
+3:37 Your challenge

@@ -1,0 +1,188 @@
+1
+00:00:00,500 --> 00:00:06,240
+You drove the scheduler. Now open the hood. You only read these files; you don't
+
+2
+00:00:06,240 --> 00:00:09,540
+edit them. Nothing here needs to be memorised.
+
+3
+00:00:10,540 --> 00:00:18,368
+In scheduler .h, line 20 says there are three task slots. Line 22 names the shape of
+
+4
+00:00:18,368 --> 00:00:19,020
+a task.
+
+5
+00:00:19,520 --> 00:00:26,000
+Lines 33 to 37 are each task's card. Line 35, the stack pointer, must come first,
+
+6
+00:00:26,000 --> 00:00:29,840
+because the switching code reads the first word.
+
+7
+00:00:30,340 --> 00:00:37,087
+Lines 41 and 44 share the current task and the tick count. Lines 50 and 57 are the
+
+8
+00:00:37,087 --> 00:00:38,980
+two functions you used.
+
+9
+00:00:39,980 --> 00:00:48,345
+Now scheduler.c. Line 11 gives each task 256 words of stack. Line 12 sets the bit
+
+10
+00:00:48,345 --> 00:00:51,340
+that says Thumb instructions.
+
+11
+00:00:51,840 --> 00:00:57,472
+Lines 14 to 16 are the stacks, the cards, and the current position. Lines 18 and 19
+
+12
+00:00:57,472 --> 00:00:59,440
+are shared with the switcher.
+
+13
+00:01:00,440 --> 00:01:06,040
+Lines 25 to 33 catch a task that returns by mistake. It waits here forever.
+
+14
+00:01:07,040 --> 00:01:14,160
+Lines 43 to 56 build a pretend saved state on a new task's stack.
+
+15
+00:01:14,660 --> 00:01:17,700
+Line 46 writes the status value.
+
+16
+00:01:18,200 --> 00:01:22,280
+Line 48 writes your function's address, so the first turn starts there.
+
+17
+00:01:22,780 --> 00:01:25,660
+Line 50 points the return at the safety net.
+
+18
+00:01:26,160 --> 00:01:31,440
+Lines 51 to 54 leave room for the other registers.
+
+19
+00:01:31,940 --> 00:01:34,980
+Line 55 returns the new stack position.
+
+20
+00:01:35,980 --> 00:01:42,842
+Line 60 finds the top of this slot's stack. Line 61 forges the bookmark. Line 62
+
+21
+00:01:42,842 --> 00:01:44,300
+records the name.
+
+22
+00:01:45,300 --> 00:01:51,322
+Line 73 adds one, then takes the remainder after dividing by three. Line 74 makes
+
+23
+00:01:51,322 --> 00:01:52,660
+that task current.
+
+24
+00:01:53,160 --> 00:01:55,880
+Starting at zero, what are the next three?
+
+25
+00:01:56,380 --> 00:02:01,380
+Your turn. Pause the video.
+
+26
+00:02:01,380 --> 00:02:05,380
+One, two, zero.
+
+27
+00:02:06,380 --> 00:02:11,260
+Line 79 counts a millisecond. Line 82 requests a switch.
+
+28
+00:02:11,760 --> 00:02:16,240
+Lines 90 and 91 give both interrupts the lowest priority.
+
+29
+00:02:16,740 --> 00:02:19,700
+Lines 93 and 94 choose task zero.
+
+30
+00:02:20,200 --> 00:02:26,120
+Line 98 sets the one millisecond tick. Line 100 launches the first task.
+
+31
+00:02:27,120 --> 00:02:31,600
+Now the assembly file. Line 28 reads the old task's stack position.
+
+32
+00:02:32,100 --> 00:02:34,580
+Lines 30 and 31 find its card.
+
+33
+00:02:35,080 --> 00:02:40,520
+Line 33 makes 32 bytes of room. Line 34 saves the position on the card.
+
+34
+00:02:41,020 --> 00:02:48,023
+Line 36 stores four registers. Lines 37 to 40 move four more down, and line 41
+
+35
+00:02:48,023 --> 00:02:49,100
+stores them.
+
+36
+00:02:50,100 --> 00:02:55,140
+Lines 43 to 47 pause interrupts and call the chooser.
+
+37
+00:02:55,640 --> 00:02:59,880
+Lines 49 and 50 read the new task's stack position.
+
+38
+00:03:00,880 --> 00:03:04,400
+Lines 52 to 57 reload the upper registers.
+
+39
+00:03:04,900 --> 00:03:07,220
+Line 59 sets the new stack.
+
+40
+00:03:07,720 --> 00:03:12,840
+Lines 61 and 62 reload the other four.
+
+41
+00:03:13,340 --> 00:03:19,058
+Line 64 returns, and the chip restores the rest. The new task wakes where it
+
+42
+00:03:19,058 --> 00:03:19,660
+stopped.
+
+43
+00:03:20,660 --> 00:03:24,900
+Lines 80 to 84 find task zero's pretend stack.
+
+44
+00:03:25,400 --> 00:03:28,840
+Lines 86 to 88 switch to the task stack.
+
+45
+00:03:29,340 --> 00:03:36,700
+Lines 90 to 93 unpack the bookmark. Lines 95 and 96 allow interrupts and jump in.
+
+46
+00:03:37,700 --> 00:03:43,614
+Draw one task's stack and mark where the saved pointer lands. If you can explain it
+
+47
+00:03:43,614 --> 00:03:46,820
+to a friend, you understand a real scheduler.
+

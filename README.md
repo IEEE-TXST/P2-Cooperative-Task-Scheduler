@@ -6,6 +6,16 @@ IEEE TXST Student Branch, Fall 2026 FRDM-KL26Z project series.
 
 **Platform:** NXP FRDM-KL26Z (ARM Cortex-M0+, 48 MHz, 128 KB Flash). No extra hardware. Prerequisite: P1 complete, comfortable with NVIC, interrupts, and UART.
 
+## Watch and build
+
+Watch in order. See [the walkthrough notes](walkthroughs/README.md) before you start.
+
+| Order | Video | Length | Code used |
+| ---: | --- | ---: | --- |
+| 1 | [Ideas: one brain, three jobs](walkthroughs/P2-01_How_Tasks_Take_Turns.mp4) | 3:03 |  |
+| 2 | [Demo: three jobs at once](walkthroughs/P2-D1_Scheduler_Line_by_Line.mp4) | 6:15 | [01_scheduler_from_scratch](demo_code/01_scheduler_from_scratch) |
+| 3 | [Inside the scheduler engine](walkthroughs/P2-D2_Engine_Line_by_Line.mp4) | 3:48 | [01_scheduler_from_scratch](demo_code/01_scheduler_from_scratch) |
+
 ## What this project is
 
 Members build a cooperative round-robin task scheduler entirely from scratch, using SysTick as the time base and PendSV as the context switcher, with the switcher written in ARM assembly. No FreeRTOS, no OS underneath it, just the processor's own exception model and direct stack manipulation. The goal is understanding what an RTOS actually does under the hood: how tasks share one CPU, how registers get saved and restored, and why priority levels matter. The demo runs three concurrent tasks on the same CPU with visible proof of scheduling.

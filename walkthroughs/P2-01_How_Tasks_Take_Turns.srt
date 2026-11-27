@@ -1,0 +1,164 @@
+1
+00:00:00,500 --> 00:00:06,784
+Lights blinking, words printing, touch being checked, all at once. But this chip has
+
+2
+00:00:06,784 --> 00:00:08,580
+only one processor. How?
+
+3
+00:00:09,080 --> 00:00:11,720
+It's a magic trick, and you're about to learn it.
+
+4
+00:00:12,720 --> 00:00:18,018
+Three children share one toy. A timer rings, and the next child gets it. If the
+
+5
+00:00:18,018 --> 00:00:21,840
+timer rings fast enough, all three seem to play together.
+
+6
+00:00:22,340 --> 00:00:30,576
+Our children are tasks. The teacher with the timer is the scheduler. Turns go one,
+
+7
+00:00:30,576 --> 00:00:36,100
+two, three, one, two, three. That's called round robin.
+
+8
+00:00:36,600 --> 00:00:41,729
+The project's name says 'cooperative', but notice: here the timer takes the toy
+
+9
+00:00:41,729 --> 00:00:44,520
+away, whether the child is finished or not.
+
+10
+00:00:45,520 --> 00:00:51,575
+A timer inside the chip, called SysTick, rings every millisecond: a thousand times a
+
+11
+00:00:51,575 --> 00:00:52,080
+second.
+
+12
+00:00:52,580 --> 00:00:57,052
+The chip runs forty-eight million beats a second, so one millisecond is forty-eight
+
+13
+00:00:57,052 --> 00:00:57,860
+thousand beats.
+
+14
+00:00:58,360 --> 00:01:03,880
+Each ring does two things: adds one to a tick counter, and asks for a switch.
+
+15
+00:01:04,880 --> 00:01:10,316
+The switch is done by a special helper called PendSV. It's given the lowest
+
+16
+00:01:10,316 --> 00:01:13,360
+importance, so urgent work finishes first.
+
+17
+00:01:13,860 --> 00:01:15,300
+Then it swaps the tasks.
+
+18
+00:01:16,300 --> 00:01:22,332
+If someone takes your book, you need a bookmark. Each task has its own private
+
+19
+00:01:22,332 --> 00:01:25,580
+notebook called a stack, 1,024 bytes here.
+
+20
+00:01:26,080 --> 00:01:29,520
+Before switching, the chip writes down everything it was holding.
+
+21
+00:01:30,020 --> 00:01:32,420
+The chip's tiny pockets are called registers.
+
+22
+00:01:32,920 --> 00:01:37,667
+When the interruption arrives, the hardware saves eight of them by itself, including
+
+23
+00:01:37,667 --> 00:01:40,040
+the program counter: the page you were on.
+
+24
+00:01:40,540 --> 00:01:44,540
+Our code saves the other eight, R four to R eleven.
+
+25
+00:01:45,540 --> 00:01:50,927
+Each task has a little card called a task control block. Its first line is the stack
+
+26
+00:01:50,927 --> 00:01:53,300
+pointer: where the notebook was left.
+
+27
+00:01:53,800 --> 00:01:58,040
+The switching code expects it to be first, so it mustn't move.
+
+28
+00:01:59,040 --> 00:02:06,646
+One. Save the outgoing task's remaining registers. Two. Write its notebook position
+
+29
+00:02:06,646 --> 00:02:14,160
+on its card. Three. Pick the next card. Four. Restore that task's registers. Five.
+
+30
+00:02:14,660 --> 00:02:18,740
+Return, and the chip continues exactly where that task stopped.
+
+31
+00:02:19,740 --> 00:02:24,600
+A brand new task has never been interrupted, so we forge a bookmark: a fake saved
+
+32
+00:02:24,600 --> 00:02:26,940
+page pointing to the start of the task.
+
+33
+00:02:27,440 --> 00:02:29,200
+The switcher can't tell the difference.
+
+34
+00:02:30,200 --> 00:02:36,357
+Trap one: an empty task slot has no bookmark. Switch to it and the chip crashes. So
+
+35
+00:02:36,357 --> 00:02:38,360
+all three slots get filled.
+
+36
+00:02:38,860 --> 00:02:44,491
+Trap two: two tasks may talk on the same message line at once, so words can get
+
+37
+00:02:44,491 --> 00:02:46,700
+mixed. Nothing protects it yet.
+
+38
+00:02:47,200 --> 00:02:50,160
+Quick quiz. After task three, who is next?
+
+39
+00:02:50,660 --> 00:02:55,660
+Your turn. Pause the video.
+
+40
+00:02:55,660 --> 00:02:56,460
+Task one.
+
+41
+00:02:57,460 --> 00:03:01,140
+Timer, bookmark, switch, repeat. Now let's watch your own board do it.
+

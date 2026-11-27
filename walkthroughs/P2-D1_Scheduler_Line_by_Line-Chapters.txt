@@ -1,0 +1,16 @@
+0:00 What we are building
+0:10 Files and driver
+0:24 The step order
+0:44 The includes, lines 88 to 95
+1:06 Step 1, the idle task, lines 127 to 132
+1:39 Step 2, the blinker's setup, lines 173 to 183
+2:10 The blinker's loop, lines 185 to 200
+2:54 Step 3, the counter, lines 233 to 251
+3:20 Step 4, the touch task, lines 285 to 296
+3:47 The touch loop, lines 298 to 321
+4:17 Step 5, wake up, lines 358 to 364
+4:25 Step 6, fill every slot, lines 396 to 398
+4:42 Step 7, start, lines 512 to 516
+5:03 Step 8, line 427
+5:15 Steps 9 and 10, lines 454 and 480
+5:39 Experiments
