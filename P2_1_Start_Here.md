@@ -24,7 +24,7 @@ Section numbers (0-20) are kept consistent across all 4 files, so "see Section 9
 
 ## How to Use This Manual
 
-Same rule as P0 and P1, with one addition specific to this project: this is a reference, not required reading, but for P2 specifically, do the Session 1 whiteboard exercise (Section 6) with an actual pen and paper before touching the keyboard.
+**Your main guide for using the scheduler is `demo_code/01_scheduler_from_scratch/main.c`**, a step-by-step file with the explanation written inside it; setup is in `P2_3_Setup_and_Walkthrough.md`. This manual is a reference, not required reading, with one addition specific to this project: do the Session 1 whiteboard exercise (Section 6) with an actual pen and paper before touching the keyboard.
 
 This project is genuinely hard, and the single biggest predictor of whether it clicks is whether you can draw the stack frame from memory before you try to write code that manipulates it. Everything after that point in this manual assumes you've done that.
 

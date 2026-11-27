@@ -2,7 +2,14 @@
 
 *Part of the P2 manual split. See `P2_1_Start_Here.md` for the full file list and how to use this manual.*
 
-**Before you start writing code:** create one new project for this entire project, via MCUXpresso's SDK wizard (P0 manual, Section 9): device `MKL26Z128VLH4`, board files = **Default board files**, project type = **C Project**, SDK Debug Console = **UART**. Every `demo_code/` folder mentioned below is something to read and copy logic from, never something to build on its own; a wizard-created project gives you MCUXpresso's normal managed build (no CMake, no `armgcc`, no relative-path setup), the same smooth build experience as any other wizard project in this series.
+**How this project works now: the code file guides you.** `demo_code/01_scheduler_from_scratch/main.c` is a step-by-step file with the explanation written inside it. The scheduler engine (`scheduler.c`, `scheduler.h`, `pendsv_handler.S`) is what you read and study; `main.c` is the part you step through. This manual's sections below are the background for the engine, and a fallback if you get stuck.
+
+**Setup, once:** create one new project via MCUXpresso's SDK wizard (P0 manual, Section 9, Step 1): device `MKL26Z128VLH4`, board files = **Default board files**, project type = **C Project**, SDK Debug Console = **UART**. Then:
+
+1. Paste the demo's `main.c` over your project's main source file.
+2. Replace your project's `pin_mux.c` with the `pin_mux.c` from the demo folder (the wizard's own only sets up the serial pins; if you skip this the program builds and runs, but the LED does nothing).
+3. Copy `scheduler.c`, `scheduler.h` and `pendsv_handler.S` into your project's source folder, unedited.
+4. Follow the steps inside `main.c`. **Note: the order you turn Part B's steps on is not the order they appear in the file.** The file header explains why.
 
 ---
 
