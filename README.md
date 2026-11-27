@@ -26,7 +26,8 @@ Three tasks running on the scheduler simultaneously. UART output shows each task
 
 ## Repo layout
 
-- `P2_1_Start_Here.md` through `P2_4_Reference.md`: the Project Manual, split into four files.
+- [`P2_Project_Manual.pdf`](P2_Project_Manual.pdf): the whole Project Manual in one file, for reading or printing.
+- [`docs/`](docs/): the same manual as four Markdown files, `P2_1_Start_Here.md` through `P2_4_Reference.md`.
 - `demo_code/01_scheduler_from_scratch/`:
   - `scheduler.c` / `scheduler.h`: task setup, the round-robin picker, and the SysTick tick source.
   - `pendsv_handler.S`: the context switcher itself, written in ARM assembly, adapted from the technique in FreeRTOS's own verified ARM_CM0 port (this project doesn't link against FreeRTOS or use any of its code).
@@ -35,7 +36,9 @@ Three tasks running on the scheduler simultaneously. UART output shows each task
 
 ## Getting started
 
-Read `P2_1_Start_Here.md` first. Section 9 of the manual walks through the context switch line by line; work through the whiteboard exercise (Session 1) before writing any assembly.
+**Manual:** [open the PDF](P2_Project_Manual.pdf), or [read it here on GitHub](docs/P2_1_Start_Here.md).
+
+Read [`P2_1_Start_Here.md`](docs/P2_1_Start_Here.md) first. Section 9 of the manual walks through the context switch line by line; work through the whiteboard exercise (Session 1) before writing any assembly.
 
 ## Resume line
 

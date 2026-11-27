@@ -4,7 +4,7 @@
 **Document status:** DRAFT v0.1, for project-leader review and bench testing before member use
 **Track:** Embedded Systems | **Difficulty:** Advanced | **Sessions:** 2 (WS4, Oct 1 and WS5, Oct 8, 2026), with pre-reading between sessions
 **Applies to:** All 8 groups (24 members)
-**Companion documents:** P0's manual (`P0_Board_Orientation_and_Toolchain_Setup/`, start at `P0_1_Start_Here.md`), P1's manual (`P1_Sensor_Dashboard/`, start at `P1_1_Start_Here.md`; read both first), *TXST IEEE FRDM-KL26Z Project Specification*
+**Companion documents:** P0's manual (`P0_Board_Orientation_and_Toolchain_Setup/docs/`, start at `P0_1_Start_Here.md`), P1's manual (`P1_Sensor_Dashboard/docs/`, start at `P1_1_Start_Here.md`; read both first), *TXST IEEE FRDM-KL26Z Project Specification*
 **Demo code:** see `demo_code/` in this project's folder
 
 ---
